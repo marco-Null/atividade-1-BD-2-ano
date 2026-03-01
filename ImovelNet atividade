@@ -1,0 +1,92 @@
+create database imovelNet;
+
+use imovelNet;
+
+
+create table faixa_imovel (
+cd_feixa integer,
+nm_faixa varchar(30),
+vl_minimo decimal(14,2),
+vl_maximo decimal(14,2)
+);
+
+create table vendedor (
+cd_vendedor integer primary key,
+nm_vendedor varchar(40) not null,
+nm_endereco varchar(40) not null,
+nr_cpf decimal(11) unique not null,
+nm_cidade varchar(20) not null,
+nm_bairro varchar(20) not null,
+sg_estado char(2) not null,
+ds_telefone varchar(20) not null,
+ds_email varchar(80)
+);
+
+create table estado (
+cd_estado integer primary key,
+sg_estado char(2),
+nm_estado varchar(20)
+);
+
+create table cidade (
+cd_cidade integer primary key,
+sg_estado varchar(2),
+nm_cidade varchar(20),
+id_estado int not null,
+foreign key (id_estado) references estado(cd_estado)
+);
+
+create table bairro (
+cd_bairro integer primary key,
+id_cidade integer,
+nm_bairro varchar(20),
+foreign key (id_cidade) references cidade(cd_cidade) 
+);
+
+create table comprador (
+cd_comprador integer primary key,
+nm_comprador varchar(40) not null,
+nm_endereco varchar(40) not null,
+nr_cpf decimal(11) unique not null,
+nm_cidade varchar(20) not null,
+nm_bairro varchar(20) not null,
+sg_estado char(2) not null,
+ds_telefone varchar(20) not null,
+ds_email varchar(80) not null
+);
+
+create table imovel (
+cd_imovel integer primary key,
+id_bairro integer,
+id_cidade integer,
+sg_estado char(2) not null,
+nm_endereco varchar(40) not null,
+nr_areautil decimal(10,2) not null,
+nr_areatotal decimal (10,2) not null,
+ds_imovel varchar(300) not null,
+vl_preco decimal(16,2) not null,
+nr_ofertas integer,
+st_vendido char(1),
+dt_lancto date,
+imovel_vendido integer,
+id_vendedor int not null,
+id_imovel int not null,
+foreign key (id_bairro) references bairro(cd_bairro),
+foreign key (id_vendedor) references vendedor(cd_vendedor),
+foreign key (id_imovel) references imovel(cd_imovel)
+);
+
+create table oferta (
+cd_oferta integer primary key,
+cd_comprador integer,
+vl_oferta numeric(16,2),
+dt_oferta date,
+id_comprador int not null,
+id_imovel int not null,
+foreign key (id_comprador) references comprador(cd_comprador),
+foreign key (id_imovel) references imovel(cd_imovel)
+);
+
+
+
+
