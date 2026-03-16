@@ -1,0 +1,169 @@
+create database imovelNet;
+
+use imovelNet;
+
+
+create table faixa_imovel (
+cd_faixa integer,
+nm_faixa varchar(30),
+vl_minimo decimal(14,2),
+vl_maximo decimal(14,2)
+);
+
+create table vendedor (
+cd_vendedor integer primary key,
+nm_vendedor varchar(40),
+nm_endereco varchar(40),
+nr_cpf decimal(11) unique,
+nm_cidade varchar(20),
+nm_bairro varchar(20),
+sg_estado char(2),
+ds_telefone varchar(20),
+ds_email varchar(80)
+);
+
+create table estado (
+cd_estado integer primary key,
+sg_estado char(2),
+nm_estado varchar(20)
+);
+
+create table cidade (
+cd_cidade integer primary key,
+sg_estado varchar(2),
+nm_cidade varchar(20),
+id_estado int not null,
+foreign key (id_estado) references estado(cd_estado)
+);
+
+create table bairro (
+cd_bairro integer,
+nm_bairro varchar(20),
+cd_cidade integer,
+sg_estado char(2),
+primary key (cd_bairro, sg_estado)
+);
+
+create table comprador (
+cd_comprador integer primary key,
+nm_comprador varchar(40),
+nm_endereco varchar(40),
+nr_cpf decimal(11) unique,
+nm_cidade varchar(20),
+nm_bairro varchar(20),
+sg_estado char(2),
+ds_telefone varchar(20),
+ds_email varchar(80)
+);
+
+CREATE TABLE imovel (
+    cd_imovel INTEGER PRIMARY KEY,
+    id_bairro INTEGER,
+    id_cidade INTEGER,
+    sg_estado CHAR(2),
+    nm_endereco VARCHAR(40),
+    nr_areautil DECIMAL(10,2),
+    nr_areatotal DECIMAL(10,2),
+    ds_imovel VARCHAR(300),
+    vl_preco DECIMAL(16,2),
+    nr_ofertas INTEGER,
+    st_vendido CHAR(1),
+    dt_lancto DATE,
+    imovel_vendido INTEGER,
+    id_vendedor INTEGER NOT NULL,
+    FOREIGN KEY (id_bairro) REFERENCES bairro(cd_bairro),
+    FOREIGN KEY (id_vendedor) REFERENCES vendedor(cd_vendedor)
+);
+
+CREATE TABLE oferta (
+    cd_oferta INTEGER PRIMARY KEY,       
+    id_comprador INTEGER NOT NULL,       
+    id_imovel INTEGER NOT NULL,          
+    vl_oferta DECIMAL(16,2) NOT NULL,   
+    dt_oferta DATE NOT NULL,              
+    FOREIGN KEY (id_comprador) REFERENCES comprador(cd_comprador),
+    FOREIGN KEY (id_imovel) REFERENCES imovel(cd_imovel)
+);
+
+insert into estado (cd_estado, sg_estado, nm_estado) values (1, 'SP', 'São Paulo');
+insert into estado (cd_estado, sg_estado, nm_estado) values (2, 'RJ', 'Rio De Janeiro');
+
+insert into cidade (cd_cidade, nm_cidade, sg_estado, id_estado) 
+values (1, 'São Paulo', 'SP', 1);
+insert into cidade (cd_cidade, nm_cidade, sg_estado, id_estado) 
+values (2, 'Santo André', 'SP', 1);
+insert into cidade (cd_cidade, nm_cidade, sg_estado, id_estado) 
+values (3, 'Campinas', 'SP', 1);
+insert into cidade (cd_cidade, nm_cidade, sg_estado, id_estado) 
+values (4, 'Rio de Janeiro', 'RJ', 2);
+
+insert into cidade (cd_cidade, nm_cidade, sg_estado, id_estado) 
+values (5, 'Niterói', 'RJ', 2);
+insert into bairro (cd_bairro, nm_bairro, cd_cidade, sg_estado) 
+values (1, 'JARDINS', 1, 'SP');
+insert into bairro (cd_bairro, nm_bairro, cd_cidade, sg_estado) 
+values (2, 'MORUMBI', 1, 'SP');
+insert into bairro (cd_bairro, nm_bairro, cd_cidade, sg_estado) 
+values (3, 'AEROPORTO', 1, 'SP');
+insert into bairro (cd_bairro, nm_bairro, cd_cidade, sg_estado) 
+values (1, 'AEROPORTO', 1, 'RJ');
+insert into bairro (cd_bairro, nm_bairro, cd_cidade, sg_estado) 
+values (2, 'FLAMENGO', 1, 'RJ');
+
+insert into vendedor (cd_vendedor, nm_vendedor, nm_endereco, ds_email) values (1, 'Maria da Silva', 'Rua do Grito, 45', 'msilva@novatec.com.br');
+insert into vendedor (cd_vendedor, nm_vendedor, nm_endereco, ds_email) values (2, 'Marcos Andrade', 'AV. Da Saudade, 325', 'mandrade@novatec.com.br');
+insert into vendedor (cd_vendedor, nm_vendedor, nm_endereco, ds_email) values (3, 'Andre Cardoso', 'AV Brasil, 401', 'acardoso@novatec.com.br');
+insert into vendedor (cd_vendedor, nm_vendedor, nm_endereco, ds_email) values (4, 'Tatiana Souza', 'Rua do Imperador, 778', 'tsouza@novatec.com.br');
+
+insert into imovel (cd_imovel, id_vendedor, id_bairro, id_cidade, sg_estado, nm_endereco, nr_areautil, nr_areatotal, vl_preco) 
+values (1, 1, 1, 1, 'SP', 'AL Tiete, 3304 AP 101', 250, 400, 180000); 
+insert into imovel (cd_imovel, id_vendedor, id_bairro, id_cidade, sg_estado, nm_endereco, nr_areautil, nr_areatotal, vl_preco) 
+values (2, 1, 2, 1, 'SP', 'AV Morumbi, 2230', 150, 250, 135000);
+insert into imovel (cd_imovel, id_vendedor, id_bairro, id_cidade, sg_estado, nm_endereco, nr_areautil, nr_areatotal, vl_preco) 
+values (3, 2, 1, 1, 'RJ', 'R Gal Osorio, 445 AP 34', 250, 400, 185000);
+insert into imovel (cd_imovel, id_vendedor, id_bairro, id_cidade, sg_estado, nm_endereco, nr_areautil, nr_areatotal, vl_preco) 
+values (4, 2, 2, 1, 'RJ', 'R D Pedro I, 882', 120, 200, 110000);
+insert into imovel (cd_imovel, id_vendedor, id_bairro, id_cidade, sg_estado, nm_endereco, nr_areautil, nr_areatotal, vl_preco) 
+values (5, 3, 3, 1, 'SP', 'AV Rubem Berta, 2355', 110, 200, 95000);
+insert into imovel (cd_imovel, id_vendedor, id_bairro, id_cidade, sg_estado, nm_endereco, nr_areautil, nr_areatotal, vl_preco) 
+values (6, 4, 1, 1, 'RJ', 'R Getulio Vargas, 552', 200, 300, 99000);
+ 
+insert into comprador (cd_comprador, nm_comprador, nm_endereco, ds_email) values (1, 'Emmanuel Antunes', 'R Saraiva, 452', 'eantunes@novatec.com.br');
+insert into comprador (cd_comprador, nm_comprador, nm_endereco, ds_email) values (2, 'Joana Pereira', 'AV Portugal, 52', 'jpereira@novatec.com.br');
+insert into comprador (cd_comprador, nm_comprador, nm_endereco, ds_email) values (3, 'Ronaldo Campelo', 'R Estados Unidos, 790', 'rcampelo@novatec.com.br');
+insert into comprador (cd_comprador, nm_comprador, nm_endereco, ds_email) values (4, 'Manfred Augusto', 'AV Brasil, 351', 'maugusto@novatec.com.br');
+
+INSERT INTO oferta (cd_oferta, id_comprador, id_imovel, vl_oferta, dt_oferta) 
+VALUES (1, 1, 1, 170000, '2002-01-10');
+
+INSERT INTO oferta (cd_oferta, id_comprador, id_imovel, vl_oferta, dt_oferta) 
+VALUES (2, 1, 3, 180000, '2002-01-10');
+
+INSERT INTO oferta (cd_oferta, id_comprador, id_imovel, vl_oferta, dt_oferta) 
+VALUES (3, 2, 2, 135000, '2002-02-15');
+
+INSERT INTO oferta (cd_oferta, id_comprador, id_imovel, vl_oferta, dt_oferta) 
+VALUES (4, 2, 4, 100000, '2002-01-05');
+
+INSERT INTO oferta (cd_oferta, id_comprador, id_imovel, vl_oferta, dt_oferta) 
+VALUES (5, 3, 1, 160000, '2002-01-10');
+
+INSERT INTO oferta (cd_oferta, id_comprador, id_imovel, vl_oferta, dt_oferta) 
+VALUES (6, 3, 2, 140000, '2002-02-20');
+
+update imovel set vl_preco = vl_preco * 1.10 where cd_imovel = 1;
+update imovel set vl_preco = vl_preco * 1.10 where cd_imovel = 2;
+update imovel set vl_preco = vl_preco * 1.10 where cd_imovel = 3;
+update imovel set vl_preco = vl_preco * 1.10 where cd_imovel = 4;
+update imovel set vl_preco = vl_preco * 1.10 where cd_imovel = 5;
+update imovel set vl_preco = vl_preco * 1.10 where cd_imovel = 6;
+
+update imovel set vl_preco = vl_preco * 0.95 where id_vendedor = 1;
+
+update oferta set vl_oferta = vl_oferta * 1.05 where id_comprador = 2;
+
+update comprador set nm_endereco = 'Rananás, 45', sg_estado = 'RJ' where cd_comprador = 3;
+
+update oferta set vl_oferta = 101000 where id_comprador = 2 and id_imovel = 4;
+
+delete from oferta where id_comprador = 3 and id_imovel = 1;
