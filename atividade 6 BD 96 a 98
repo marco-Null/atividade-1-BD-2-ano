@@ -1,0 +1,143 @@
+create database imovelNet;
+
+use imovelNet;
+
+
+create table faixa_imovel (
+cd_faixa integer,
+nm_faixa varchar(30),
+vl_minimo decimal(14,2),
+vl_maximo decimal(14,2)
+);
+
+create table vendedor (
+cd_vendedor integer primary key,
+nm_vendedor varchar(40),
+nm_endereco varchar(40),
+nr_cpf decimal(11) unique,
+nm_cidade varchar(20),
+nm_bairro varchar(20),
+sg_estado char(2),
+ds_telefone varchar(20),
+ds_email varchar(80)
+);
+
+create table estado (
+cd_estado integer primary key,
+sg_estado char(2),
+nm_estado varchar(20)
+);
+
+create table cidade (
+cd_cidade integer primary key,
+sg_estado varchar(2),
+nm_cidade varchar(20),
+id_estado int not null,
+foreign key (id_estado) references estado(cd_estado)
+);
+
+create table bairro (
+cd_bairro integer,
+nm_bairro varchar(20),
+cd_cidade integer,
+sg_estado char(2),
+primary key (cd_bairro, sg_estado)
+);
+
+create table comprador (
+cd_comprador integer primary key,
+nm_comprador varchar(40),
+nm_endereco varchar(40),
+nr_cpf decimal(11) unique,
+nm_cidade varchar(20),
+nm_bairro varchar(20),
+sg_estado char(2),
+ds_telefone varchar(20),
+ds_email varchar(80)
+);
+
+create table imovel (
+cd_imovel integer primary key,
+id_bairro integer,
+id_cidade integer,
+sg_estado char(2),
+nm_endereco varchar(40),
+nr_areautil decimal(10,2),
+nr_areatotal decimal (10,2),
+ds_imovel varchar(300),
+vl_preco decimal(16,2),
+nr_ofertas integer,
+st_vendido char(1),
+dt_lancto date,
+imovel_vendido integer,
+id_vendedor integer,
+id_imovel integer,
+foreign key (id_bairro) references bairro(cd_bairro),
+foreign key (id_vendedor) references vendedor(cd_vendedor),
+foreign key (id_imovel) references imovel(cd_imovel)
+);
+
+create table oferta (
+cd_oferta integer primary key,
+cd_comprador integer,
+vl_oferta numeric(16,2),
+dt_oferta date,
+id_comprador int not null,
+id_imovel int not null,
+foreign key (id_comprador) references comprador(cd_comprador),
+foreign key (id_imovel) references imovel(cd_imovel)
+);
+
+insert into estado (cd_estado, sg_estado, nm_estado) values (1, 'SP', 'São Paulo');
+insert into estado (cd_estado, sg_estado, nm_estado) values (2, 'RJ', 'Rio De Janeiro');
+
+insert into cidade (cd_cidade, nm_cidade, sg_estado, id_estado) 
+values (1, 'São Paulo', 'SP', 1);
+insert into cidade (cd_cidade, nm_cidade, sg_estado, id_estado) 
+values (2, 'Santo André', 'SP', 1);
+insert into cidade (cd_cidade, nm_cidade, sg_estado, id_estado) 
+values (3, 'Campinas', 'SP', 1);
+insert into cidade (cd_cidade, nm_cidade, sg_estado, id_estado) 
+values (4, 'Rio de Janeiro', 'RJ', 2);
+
+insert into cidade (cd_cidade, nm_cidade, sg_estado, id_estado) 
+values (5, 'Niterói', 'RJ', 2);
+insert into bairro (cd_bairro, nm_bairro, cd_cidade, sg_estado) 
+values (1, 'JARDINS', 1, 'SP');
+insert into bairro (cd_bairro, nm_bairro, cd_cidade, sg_estado) 
+values (2, 'MORUMBI', 1, 'SP');
+insert into bairro (cd_bairro, nm_bairro, cd_cidade, sg_estado) 
+values (3, 'AEROPORTO', 1, 'SP');
+insert into bairro (cd_bairro, nm_bairro, cd_cidade, sg_estado) 
+values (1, 'AEROPORTO', 1, 'RJ');
+insert into bairro (cd_bairro, nm_bairro, cd_cidade, sg_estado) 
+values (2, 'FLAMENGO', 1, 'RJ');
+
+insert into vendedor (cd_vendedor, nm_vendedor, nm_endereco, ds_email) values (1, 'Maria da Silva', 'Rua do Grito, 45', 'msilva@novatec.com.br');
+insert into vendedor (cd_vendedor, nm_vendedor, nm_endereco, ds_email) values (2, 'Marcos Andrade', 'AV. Da Saudade, 325', 'mandrade@novatec.com.br');
+insert into vendedor (cd_vendedor, nm_vendedor, nm_endereco, ds_email) values (3, 'Andre Cardoso', 'AV Brasil, 401', 'acardoso@novatec.com.br');
+insert into vendedor (cd_vendedor, nm_vendedor, nm_endereco, ds_email) values (4, 'Tatiana Souza', 'Rua do Imperador, 778', 'tsouza@novatec.com.br');
+
+insert into imovel (cd_imovel, id_vendedor, id_bairro, id_cidade, sg_estado, nm_endereco, nr_areautil, nr_areatotal, vl_preco) 
+values (1, 1, 1, 1, 'SP', 'AL Tiete, 3304 AP 101', 250, 400, 180000); 
+insert into imovel (cd_imovel, id_vendedor, id_bairro, id_cidade, sg_estado, nm_endereco, nr_areautil, nr_areatotal, vl_preco) 
+values (2, 1, 2, 1, 'SP', 'AV Morumbi, 2230', 150, 250, 135000);
+insert into imovel (cd_imovel, id_vendedor, id_bairro, id_cidade, sg_estado, nm_endereco, nr_areautil, nr_areatotal, vl_preco) 
+values (3, 2, 1, 1, 'RJ', 'R Gal Osorio, 445 AP 34', 250, 400, 185000);
+insert into imovel (cd_imovel, id_vendedor, id_bairro, id_cidade, sg_estado, nm_endereco, nr_areautil, nr_areatotal, vl_preco) 
+values (4, 2, 2, 1, 'RJ', 'R D Pedro I, 882', 120, 200, 110000);
+insert into imovel (cd_imovel, id_vendedor, id_bairro, id_cidade, sg_estado, nm_endereco, nr_areautil, nr_areatotal, vl_preco) 
+values (5, 3, 3, 1, 'SP', 'AV Rubem Berta, 2355', 110, 200, 95000);
+insert into imovel (cd_imovel, id_vendedor, id_bairro, id_cidade, sg_estado, nm_endereco, nr_areautil, nr_areatotal, vl_preco) 
+values (6, 4, 1, 1, 'RJ', 'R Getulio Vargas, 552', 200, 300, 99000);
+ 
+insert into comprador (cd_comprador, nm_comprador, nm_endereco, ds_email) values (1, 'Emmanuel Antunes', 'R Saraiva, 452', 'eantunes@novatec.com.br');
+insert into comprador (cd_comprador, nm_comprador, nm_endereco, ds_email) values (2, 'Joana Pereira', 'AV Portugal, 52', 'jpereira@novatec.com.br');
+insert into comprador (cd_comprador, nm_comprador, nm_endereco, ds_email) values (3, 'Ronaldo Campelo', 'R Estados Unidos, 790', 'rcampelo@novatec.com.br');
+insert into comprador (cd_comprador, nm_comprador, nm_endereco, ds_email) values (4, 'Manfred Augusto', 'AV Brasil, 351', 'maugusto@novatec.com.br');
+
+
+
+
+
+
