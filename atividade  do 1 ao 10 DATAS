@@ -197,7 +197,7 @@ update oferta set vl_oferta = vl_oferta * 1.05 where id_comprador = 2;
 --  select cd_comprador, nm_comprador, nm_endereco, sg_estado from comprador where sg_estado is not null;
 --------------------------
 -- atividade 12 de 20.
---   select * from oferta where vl_oferta between 100000 and 150000;
+--  select * from oferta where vl_oferta between 100000 and 150000;
 --------------------------
 -- atividade 13 de 20.
 --  select * from oferta where dt_oferta between '2002/02/01' and '2002/03/01';
@@ -226,13 +226,36 @@ update oferta set vl_oferta = vl_oferta * 1.05 where id_comprador = 2;
 
 -- 10 atividades de date
 -- 1 de 10
-select current_date() from dual;
+ select current_date() from dual;
 ------------------------------------
 -- 2 de 10
+ select cd_imovel, vl_preco, vl_preco * 1.10 as vl_preco_com_aumento from imovel;
+------------------------------------
+-- 3 de 10
+ select cd_imovel, vl_preco, (vl_preco * 1.10) - vl_preco as diferenca from imovel where cd_imovel in (1,2);
+------------------------------------
+-- 4 de 10
+ select upper(nm_vendedor) as nm_vendedor, lower(ds_email) as ds_email from vendedor;
+------------------------------------
+-- 5 de 10
+ select concat(nm_comprador, ' - ', nm_cidade) AS comprador_cidade from comprador;
+------------------------------------
+-- 6 de 10
+ select * from comprador where nm_comprador like '%A%';
+------------------------------------
+-- 7 de 10
+ select left(nm_comprador, 1) as Primeira_Letra, nm_bairro from comprador;
+------------------------------------
+-- 8 de 10
+ select id_imovel as cd_imovel, datediff(curdate(), dt_oferta) as dias from oferta;
+------------------------------------
+-- 9 de 10
+ select cd_imovel, dt_lancto, datediff(curdate(), dt_lancto) as dias from imovel;
+------------------------------------
+-- 10 de 10
+select cd_imovel, dt_lancto, DATEDIFF(CURDATE(), dt_lancto) AS dias, DATE_ADD(dt_lancto, INTERVAL 15 DAY) AS mais_15_dias from imovel;
+------------------------------------
 
 
-
-
--- drop database imovelNet;
 
 
