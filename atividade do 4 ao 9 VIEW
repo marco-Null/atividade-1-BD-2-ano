@@ -165,96 +165,96 @@ update oferta set vl_oferta = vl_oferta * 1.05 where id_comprador = 2;
 
 -- atividade 1 de 20.
 --  select * from bairro;
---------------------------
+-- ------------------------
 -- atividade 2 de 20.
 --  select cd_comprador, nm_comprador, ds_email from comprador;
---------------------------
+-- ------------------------
 -- atividade 3 de 20.
 --  select cd_vendedor, nm_vendedor, ds_email from vendedor order by nm_vendedor;
---------------------------
+-- ------------------------
 -- atividade 4 de 20.
 --  select cd_vendedor, nm_vendedor, ds_email from vendedor order by nm_vendedor desc;
---------------------------
+-- ------------------------
 -- atividade 5 de 20.
 --  select cd_bairro, nm_bairro, sg_estado from bairro where sg_estado like 'SP%';
---------------------------
+-- ------------------------
 -- atividade 6 de 20.
 --  select cd_imovel, id_vendedor, vl_preco from imovel where id_vendedor like '2%';
---------------------------
+-- ------------------------
 -- atividade 7 de 20.
 --  select cd_imovel, id_vendedor, vl_preco, sg_estado from imovel where vl_preco <= 150000 and sg_estado like 'RJ%';
---------------------------
+-- ------------------------
 -- atividade 8 de 20.
 --  select cd_imovel, id_vendedor, vl_preco, sg_estado from imovel where vl_preco <= 150000 or id_vendedor like '1%';
---------------------------
+-- ------------------------
 -- atividade 9 de 20.
 -- select cd_imovel, id_vendedor, vl_preco, sg_estado from imovel where vl_preco <= 150000 and not id_vendedor like '2%';
---------------------------
+-- ------------------------
 -- atividade 10 de 20.
 --  select cd_comprador, nm_comprador, nm_endereco, sg_estado from comprador where sg_estado like'null%';
---------------------------
+-- ------------------------
 -- atividade 11 de 20.
 --  select cd_comprador, nm_comprador, nm_endereco, sg_estado from comprador where sg_estado is not null;
---------------------------
+-- ------------------------
 -- atividade 12 de 20.
 --  select * from oferta where vl_oferta between 100000 and 150000;
---------------------------
+-- ------------------------
 -- atividade 13 de 20.
 --  select * from oferta where dt_oferta between '2002/02/01' and '2002/03/01';
---------------------------
+-- ------------------------
 -- atividade 14 de 20.
 --  select * from vendedor where nm_vendedor like 'M%';
---------------------------
+-- ------------------------
 -- atividade 15 de 20.
 --  select * from vendedor where nm_vendedor like '_a%';
---------------------------
+-- ------------------------
 -- atividade 16 de 20.
 --  select * from comprador where nm_endereco like '%U%';
---------------------------
+-- ------------------------
 -- atividade 17 de 20.
 --  select * from oferta where id_imovel = 1 or id_imovel = 2;
---------------------------
+-- ------------------------
 -- atividade 18 de 20.
 -- select * from imovel where cd_imovel = 2 or cd_imovel = 3 order by nm_endereco;
---------------------------
+-- ------------------------
 -- atividade 19 de 20.
 -- select * from oferta where id_imovel = 2 or id_imovel = 3 and vl_oferta >= 140000 order by dt_oferta desc;
---------------------------
+-- ------------------------
 -- atividade 20 de 20.
 -- select * from imovel where vl_preco between 110000 and 200000;
---------------------------
+-- ------------------------
 
 -- 10 atividades de date
 -- 1 de 10
  -- select current_date() from dual;
-------------------------------------
+-- ------------------------
 -- 2 de 10
  -- select cd_imovel, vl_preco, vl_preco * 1.10 as vl_preco_com_aumento from imovel;
-------------------------------------
+-- ------------------------
 -- 3 de 10
  -- select cd_imovel, vl_preco, (vl_preco * 1.10) - vl_preco as diferenca from imovel where cd_imovel in (1,2);
-------------------------------------
+-- ------------------------
 -- 4 de 10
  -- select upper(nm_vendedor) as nm_vendedor, lower(ds_email) as ds_email from vendedor;
-------------------------------------
+-- ------------------------
 -- 5 de 10
  -- select concat(nm_comprador, ' - ', nm_cidade) AS comprador_cidade from comprador;
-------------------------------------
+-- ------------------------
 -- 6 de 10
  -- select * from comprador where nm_comprador like '%A%';
-------------------------------------
+-- ------------------------
 -- 7 de 10
  -- select left(nm_comprador, 1) as Primeira_Letra, nm_bairro from comprador;
-------------------------------------
+-- ------------------------
 -- 8 de 10
  -- select id_imovel as cd_imovel, datediff(curdate(), dt_oferta) as dias from oferta;
-------------------------------------
+-- ------------------------
 -- 9 de 10
 -- select cd_imovel, dt_lancto, datediff(curdate(), dt_lancto) as dias from imovel;
-------------------------------------
+-- ------------------------
 -- 10 de 10
 -- select cd_imovel, dt_lancto, DATEDIFF(CURDATE(), dt_lancto) AS dias, DATE_ADD(dt_lancto, INTERVAL 15 DAY) AS mais_15_dias from imovel;
-------------------------------------
+-- ------------------------
 
 -- atividade de JOIN 1 - 10
 
@@ -630,71 +630,80 @@ update oferta set vl_oferta = vl_oferta * 1.05 where id_comprador = 2;
     
 -- 4 de 9
 
-CREATE VIEW vVENDEDOR AS
-SELECT 
-    cd_vendedor,
-    nm_vendedor,
-    nm_endereco
-FROM vendedor;
+ CREATE VIEW vVENDEDOR AS
+ SELECT 
+     cd_vendedor,
+     nm_vendedor,
+     nm_endereco
+ FROM vendedor;
 
 -- 5 de 9
 
-SELECT * FROM vVENDEDOR;
+-- SELECT * FROM vVENDEDOR;
 
 -- 6 de 9
 
-CREATE VIEW vIMOVEL_BAIRRO1 AS
-SELECT
-    cd_imovel,
-    nm_endereco,
-    vl_preco
-FROM imovel
-WHERE id_bairro = 1;
+ CREATE VIEW vIMOVEL_BAIRRO1 AS
+ SELECT
+     cd_imovel,
+     nm_endereco,
+     vl_preco
+ FROM imovel
+ WHERE id_bairro = 1;
 
 -- 7 de 9
 
-CREATE VIEW vIMOVEL AS
-SELECT
-    v.nm_vendedor,
-    i.nm_endereco,
-    b.nm_bairro,
-    c.nm_cidade,
-    e.nm_estado
-FROM imovel i
-INNER JOIN vendedor v
-    ON i.id_vendedor = v.cd_vendedor
-INNER JOIN bairro b
-    ON i.id_bairro = b.cd_bairro
-    AND i.sg_estado = b.sg_estado
-INNER JOIN cidade c
-    ON i.id_cidade = c.cd_cidade
-    AND i.sg_estado = c.sg_estado
-INNER JOIN estado e
-    ON c.id_estado = e.cd_estado;
+ CREATE VIEW vIMOVEL AS
+ SELECT
+     v.nm_vendedor,
+     i.nm_endereco,
+     b.nm_bairro,
+     c.nm_cidade,
+     e.nm_estado
+ FROM imovel i
+ INNER JOIN vendedor v
+     ON i.id_vendedor = v.cd_vendedor
+ INNER JOIN bairro b
+     ON i.id_bairro = b.cd_bairro
+     AND i.sg_estado = b.sg_estado
+ INNER JOIN cidade c
+     ON i.id_cidade = c.cd_cidade
+     AND i.sg_estado = c.sg_estado
+ INNER JOIN estado e
+     ON c.id_estado = e.cd_estado;
     
 -- 8 de 9
 
 CREATE VIEW vIMOVEL_CIDADE AS
-SELECT
-    c.nm_cidade,
-    AVG(i.vl_preco) AS preco_medio
-FROM imovel i
-INNER JOIN cidade c
-    ON i.id_cidade = c.cd_cidade
-    AND i.sg_estado = c.sg_estado
-GROUP BY c.nm_cidade;
+ SELECT
+   c.nm_cidade,
+  AVG(i.vl_preco) AS preco_medio
+  FROM imovel i
+ INNER JOIN cidade c
+     ON i.id_cidade = c.cd_cidade
+     AND i.sg_estado = c.sg_estado
+ GROUP BY c.nm_cidade;
 
 -- 9 de 9
 
-CREATE VIEW vOFERTA AS
-SELECT
-    c.nm_comprador,
-    o.vl_oferta,
-    i.nm_endereco
-FROM oferta o
-INNER JOIN comprador c
-    ON o.id_comprador = c.cd_comprador
-INNER JOIN imovel i
-    ON o.id_imovel = i.cd_imovel;
+ CREATE VIEW vOFERTA AS
+ SELECT
+     c.nm_comprador,
+     o.vl_oferta,
+     i.nm_endereco
+ FROM oferta o
+ INNER JOIN comprador c
+     ON o.id_comprador = c.cd_comprador
+ INNER JOIN imovel i
+     ON o.id_imovel = i.cd_imovel;
 
 
+-- atividade de recursos do usuario ---------------
+
+-- 1 de 8
+
+
+
+-- 2 de 8
+
+-- drop database imovelnet;
